@@ -18,11 +18,19 @@ module ChatAdapter
       answer
     end
 
+    # Send a direct message to a user
+    def direct_message(user, message)
+      raise "Not implemented for #{self}"
+    end
+
+    # TODO: send_to_channel?
+    # TODO: start, stop
+
     # Validate the message came from the correct sources.
     # Useful for adapters like slack, where webhooks may originate from sources
     # other than the actual chatroom itself.
     #
-    # @return bool if the message should be processed. By default true
+    # @return [Boolean] Should the message be processed? Defaults to true.
     def validate(event_data)
       true
     end
@@ -31,6 +39,13 @@ module ChatAdapter
     # 
     # It first calls validate to make sure the message should actually be
     # processed, followed by calling the specified message_processor.
+    #
+    # @param [String] message
+    # @param [Hash] event_data
+    # @option event_data [Symbol] :adapter Type of adapter e.g. :irc or :slack
+    # @option event_data [String] :channel What channel the message occurred in
+    # @option event_data [String] :user Nickname of the user who sent the message
+    # @option event_data :extra Extra information passed by adapter.
     def process_message(message, event_data={})
       unless message_processor
         raise "No message processor registered. Please call on_message on the adapter."

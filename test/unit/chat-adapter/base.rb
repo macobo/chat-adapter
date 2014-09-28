@@ -34,9 +34,9 @@ class Base < Critic::Test
     end
 
     it 'should raise an error if need to process message and on_message not called' do
-      assert_raises(RuntimeError) {
+      assert_raises(RuntimeError) do
         SimpleAdapter.new.process_message('abc', {})
-      }
+      end
     end
   end
 
