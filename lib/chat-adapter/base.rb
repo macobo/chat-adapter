@@ -34,18 +34,18 @@ module ChatAdapter
     # @abstract
     def stop!; end
 
-    # Validate the message came from the correct sources.
+    # Verify the message came from the correct sources.
     # Useful for adapters like slack, where webhooks may originate from sources
     # other than the actual chatroom itself.
     #
     # @return [Boolean] Should the message be processed? Defaults to true.
-    def validate(event_data)
+    def verify(event_data)
       true
     end
 
     # Function to call from within your adapter when a new message is received.
     # 
-    # It first calls validate to make sure the message should actually be
+    # It first calls veriy to make sure the message should actually be
     # processed, followed by calling the specified message_processor.
     #
     # @param [String] message
@@ -59,8 +59,8 @@ module ChatAdapter
         raise "No message processor registered. Please call on_message on the adapter."
       end
 
-      is_valid = validate(event_data)
-      unless validate(event_data)
+      is_valid = verify(event_data)
+      unless verify(event_data)
         log.warn("Not valid request ignored: event_data=#{event_data}, message=#{message.inspect}")
         return nil
       end

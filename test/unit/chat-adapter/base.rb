@@ -45,7 +45,7 @@ class Base < Critic::Test
       def initialize; end
 
       # don't do this in a real chat system, please!
-      def validate(event_data)
+      def verify(event_data)
         event_data[:token] == '555'
       end
     end
