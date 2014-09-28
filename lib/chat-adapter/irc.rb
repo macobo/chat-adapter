@@ -1,16 +1,38 @@
 require 'cinch'
 
 module ChatAdapter
+  # Irc adapter
+  #
+  # Uses {https://github.com/cinchrb/cinch Cinch library} to handle
+  # communicating with IRC.
+  #
+  # @example
+  #   # Very silly example that responds to each message in channel.
+  #   require 'chat-adapter'
+  #   bot = ChatAdapter::IRC.new({
+  #     server: 'irc.freenode.org',
+  #     nick: 'shalalalabot',
+  #     channels: ['#general']
+  #   })
+  #   
+  #   bot.on_message { |message, event| "shalalalala" }
+  #   bot.start
   class IRC < Base
     DEFAULT_CINCH_OPTIONS = {
       nick: 'chatbot',
       channels: [],
+      port: 6697,
       password: nil,
       use_ssl: false
     }
 
     attr_reader :bot, :options
-    def initialize(irc_options = {})
+    # Create a new IRC adapter.
+    #
+    # @param [Hash] irc_options Options to pass to Cinch. Most params are
+    #     described at {http://www.rubydoc.info/github/cinchrb/cinch/Cinch/Configuration/Bot Cinch::Configuration::Bot}.
+    # @option irc_options [Boolean] :use_ssl
+    def initialize(irc_options)
       @options = DEFAULT_CINCH_OPTIONS.merge(irc_options)
       ChatAdapter.log.info(@options)
 
@@ -33,6 +55,11 @@ module ChatAdapter
       end
     end
 
+    # Grabs information about the message from the message object.
+    #
+    # @return [Hash] event_data Information about this message. :extra contains
+    #     {http://www.rubydoc.info/github/cinchrb/cinch/Cinch/Message Cinch::Message}.
+    # @see ChatAdapter::Base#process_message
     def event_data(m)
       {
         adapter: :irc,
