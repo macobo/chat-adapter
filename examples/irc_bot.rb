@@ -7,7 +7,12 @@ bot = ChatAdapter::IRC.new({
 })
 
 bot.on_message do |message, event_data|
+  if message == '!stop'
+    bot.stop!
+  end
+
   "#{message}, ed=#{event_data}"
 end
 
-bot.start
+bot.start!
+puts "Done!"

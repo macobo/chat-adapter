@@ -1,5 +1,9 @@
 module ChatAdapter
+  # Base class that all adapters inherit from which takes care of some of the
+  # internal plumbing
   class Base
+    # @return [Proc] Function passed to #{on_message} as block, containing
+    #    how logic about how the user wants to deal with message.
     attr_reader :message_processor
 
     def initialize
@@ -14,17 +18,21 @@ module ChatAdapter
       @message_processor = processor_block
     end
 
-    def post_process(answer)
-      answer
-    end
-
     # Send a direct message to a user
+    # @abstract
     def direct_message(user, message)
       raise "Not implemented for #{self}"
     end
 
     # TODO: send_to_channel?
-    # TODO: start, stop
+
+    # Starts the chatbot. Blocks until {#stop!} is called
+    # @abstract
+    def start!; end
+
+    # Stops the chatbot, returning from the {#start!} call.
+    # @abstract
+    def stop!; end
 
     # Validate the message came from the correct sources.
     # Useful for adapters like slack, where webhooks may originate from sources
@@ -59,6 +67,12 @@ module ChatAdapter
 
       answer = message_processor.call(message, event_data)
       post_process(answer)
+    end
+
+    # Post-processes the answer to query. By default does nothing.
+    # TODO: add hooks to provide post-processing.
+    def post_process(answer)
+      answer
     end
 
     private

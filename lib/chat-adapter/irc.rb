@@ -21,7 +21,6 @@ module ChatAdapter
     DEFAULT_CINCH_OPTIONS = {
       nick: 'chatbot',
       channels: [],
-      port: 6697,
       password: nil,
       use_ssl: false
     }
@@ -74,8 +73,12 @@ module ChatAdapter
       answer.gsub(/^$/, " ")
     end
 
-    def start
+    def start!
       @bot.start
+    end
+
+    def stop!
+      @bot.quit
     end
   end
 end
