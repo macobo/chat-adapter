@@ -2,6 +2,7 @@ require 'json'
 require 'sinatra/base'
 
 module ChatAdapter
+  # Helper classes for various adapters
   module Helpers
     # Web server for receiving web hooks from slack.
     # @see ChatAdapter::Slack

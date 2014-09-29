@@ -14,10 +14,12 @@ module ChatAdapter
       nick: 'chatbot',
       channels: nil,
       icon_emoji: ':ghost:',
-      webhook_endpoint: '/slack'
     }
 
-    attr_reader :server, :options
+    # Options passed to the instance, merged with defaults
+    attr_reader :options
+    # Sinatra server, see {ChatAdapter::Helpers::SlackWebServer}
+    attr_reader :server
 
     # Create a new slack adapter
     #
@@ -34,7 +36,8 @@ module ChatAdapter
     # @option slack_options [String] :icon_emoji (:ghost:) Emoji used as bot image.
     def initialize(slack_options)
       @options = OPTION_DEFAULTS.merge(slack_options)
-      @server = ChatAdapter::Helpers::SlackWebServer#.new(
+      @server = ChatAdapter::Helpers::SlackWebServer
+
       @server.set :adapter, self
     end
 
