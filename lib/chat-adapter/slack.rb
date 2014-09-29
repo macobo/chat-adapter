@@ -1,4 +1,5 @@
 require 'sinatra'
+require_relative './helpers/slack_web_server'
 
 module ChatAdapter
   # Slack adapter
@@ -16,6 +17,8 @@ module ChatAdapter
       webhook_endpoint: '/slack'
     }
 
+    attr_reader :server, :options
+
     # Create a new slack adapter
     #
     # @param [Hash] slack_options
@@ -31,6 +34,8 @@ module ChatAdapter
     # @option slack_options [String] :icon_emoji (:ghost:) Emoji used as bot image.
     def initialize(slack_options)
       @options = OPTION_DEFAULTS.merge(slack_options)
+      @server = ChatAdapter::Helpers::SlackWebServer#.new(
+      @server.set :adapter, self
     end
 
     # Grabs information about the message from the message object.
@@ -51,7 +56,16 @@ module ChatAdapter
     # Verifies the webhook by checking if the token in request matches the one
     # given on creation (if one was given).
     def verify(event)
-      options[:webhook_token].nil? || event_data[:token] == options[:webhook_token]
+      options[:webhook_token].nil? || event[:token] == options[:webhook_token]
+    end
+
+    # Wrap the answer into a correct json object
+    def post_process(answer)
+      JSON.generate({
+        username: options[:nick],
+        icon_emoji: options[:icon_emoji],
+        text: answer
+      })
     end
 
     def start!

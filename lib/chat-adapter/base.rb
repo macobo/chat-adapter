@@ -2,7 +2,7 @@ module ChatAdapter
   # Base class that all adapters inherit from which takes care of some of the
   # internal plumbing
   class Base
-    # @return [Proc] Function passed to #{on_message} as block, containing
+    # @return [Proc] Function passed to {#on_message} as block, containing
     #    how logic about how the user wants to deal with message.
     attr_reader :message_processor
 

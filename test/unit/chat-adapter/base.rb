@@ -57,6 +57,7 @@ class Base < Critic::Test
     end
 
     it 'should not pass messages which do not pass test' do
+      ChatAdapter.log.level = Logger::ERROR
       adapter = SillyValidatingAdapter.new
 
       adapter.on_message { |message, event| message }

@@ -6,20 +6,18 @@ module ChatAdapter
     # Web server for receiving web hooks from slack.
     # @see ChatAdapter::Slack
     class SlackWebServer < Sinatra::Base
-      # @param slack_adapter [ChatAdapter::Slack]
-      # @param webhook_url [String] url to POST to trigger webhook
-      def initialize(slack_adapter, webhook_url)
-        super
-        @slack_adapter = slack_adapter
-        @webhook_url = webhook_url
+      post '/slack' do
+        event = settings.adapter.event_data(request)
+        message = request[:text]
+        ChatAdapter.log.info(message)
+
+        answer = settings.adapter.process_message(message, event)
+        answer || ""
       end
 
-      post @webhook_url do
-        event = @slack_adapter.event_data(request)
-        message = request[:text]
-
-        answer = @slack_adapter.process_message(message, event)
-        answer || ""
+      # useful for heroku bots for pinging them automatically
+      get '/slack' do
+        ""
       end
     end
   end
