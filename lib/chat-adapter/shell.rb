@@ -39,6 +39,7 @@ module ChatAdapter
     end
 
     def start!
+      replace_logger
       puts help.green
 
       @done = false
@@ -74,6 +75,15 @@ module ChatAdapter
     end
 
     private
+    def replace_logger
+      return if @replaced
+      @replaced = true
+      base_formatter = ChatAdapter.log.formatter
+      ChatAdapter.log.formatter = proc { |severity, datetime, progname, msg| 
+        base_formatter.call(severity, datetime, progname, msg).yellow
+      }
+    end
+
     def current_prompt
       "[#{@state[:nick]} in #{@state[:channel]}]: "
     end
