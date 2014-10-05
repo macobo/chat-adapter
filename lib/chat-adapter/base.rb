@@ -55,6 +55,7 @@ module ChatAdapter
     # @option event_data [String] :user Nickname of the user who sent the message
     # @option event_data :extra Extra information passed by adapter.
     def process_message(message, event_data={})
+      log.debug("Processing #{message.inspect}, event=#{event_data}")
       unless message_processor
         raise "No message processor registered. Please call on_message on the adapter."
       end
@@ -77,7 +78,7 @@ module ChatAdapter
 
     private
     def log
-      return ChatAdapter::log
+      ChatAdapter::log
     end
   end
 end

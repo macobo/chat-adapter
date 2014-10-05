@@ -18,8 +18,12 @@ class Base < Critic::Test
 
   def answer
     return "" if last_response.body.empty?
-    result = JSON.parse(last_response.body)
-    result['text']
+    begin
+      result = JSON.parse(last_response.body)
+      result['text']
+    rescue Exception => e
+      last_response.body[0, 1000]
+    end
   end
 
   def post_query(query={})

@@ -17,11 +17,13 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'cinch'
+  spec.add_dependency 'colorize'
   spec.add_dependency 'logging'
   spec.add_dependency 'redcarpet'
   spec.add_dependency 'rest-client'
   spec.add_dependency 'sinatra'
   spec.add_dependency 'thin'
+  spec.add_dependency 'xmpp4r'
 
   spec.add_development_dependency 'minitest', '< 5.0'
   spec.add_development_dependency 'minitest-reporters'

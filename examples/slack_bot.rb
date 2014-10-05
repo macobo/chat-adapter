@@ -1,6 +1,6 @@
 require 'chat-adapter'
 
-bot = ChatAdapter::Slack.new({
+bot = ChatAdapter::Shell.new({
   nick: 'karlbottt',
   channels: ['#bot-testing'],
   webhook_token: 'abc'
