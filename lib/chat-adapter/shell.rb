@@ -23,7 +23,7 @@ module ChatAdapter
     # @option options [Array<String>] :channels (nil) Channels to converse
     #     in. If nil, bot will respond to queries in all.
     # @option 
-    def initialize(options)
+    def initialize(options = {})
       @options = OPTION_DEFAULTS.merge(options)
       @state = {
         user: "user",
@@ -60,8 +60,8 @@ module ChatAdapter
           @state[:channel] = input.split(' ', 2)[1]
           puts "Changed channel to #{@state[:channel]}".green
         elsif input.start_with? '!nick '
-          @state[:nick] = input.split(' ', 2)[1]
-          puts "Changed nick to #{@state[:nick]}".green
+          @state[:user] = input.split(' ', 2)[1]
+          puts "Changed nick to #{@state[:user]}".green
         elsif input == '!exit'
           @done = true
         else
@@ -91,7 +91,7 @@ module ChatAdapter
     end
 
     def current_prompt
-      "[#{@state[:nick]} in #{@state[:channel]}]: "
+      "[#{@state[:user]} in #{@state[:channel]}]: "
     end
 
     def help

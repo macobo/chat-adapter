@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'rest-client'
 require_relative './helpers/slack_web_server'
 
 module ChatAdapter
@@ -39,6 +40,25 @@ module ChatAdapter
       @server = ChatAdapter::Helpers::SlackWebServer
 
       @server.set :adapter, self
+    end
+
+    # Send a private message to an user
+    def direct_message(user, message)
+      unless options[:api_token]
+        raise "No api_token given to bot, cannot send a direct message."
+      end
+
+      data = {
+        username: options[:nick],
+        icon_emoji: options[:icon_emoji],
+        text: message,
+        channel: user,
+        token: options[:api_token]
+      }
+      PagerBot.log.info(data.inspect)
+
+      resp = RestClient.post "https://slack.com/api/chat.postMessage", data
+      PagerBot.log.info resp
     end
 
     # Grabs information about the message from the message object.

@@ -37,7 +37,7 @@ class Base < Critic::Test
   describe 'Slack bot' do
     it 'should pass through simple requests' do
       slack_bot do |msg, event|
-        "#{msg.capitalize}, #{event[:nick]}"
+        "#{msg.capitalize}, #{event[:user]}"
       end
 
       post_query(text: "hello", user_name: "karl")
