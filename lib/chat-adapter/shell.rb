@@ -26,9 +26,15 @@ module ChatAdapter
     def initialize(options)
       @options = OPTION_DEFAULTS.merge(options)
       @state = {
-        nick: "user",
+        user: "user",
         channel: "#channel"
       }
+    end
+
+    # Bot sends a direct message 
+    def direct_message(user, message)
+      print "(DM to #{user}) #{options[:nick]}: ".bold
+      puts message
     end
 
     # Grabs information about the message from the message object.

@@ -62,7 +62,7 @@ module ChatAdapter
     def event_data(m)
       {
         adapter: :irc,
-        nick: m.user.nick,
+        user: m.user.nick,
         channel: m.channel.name,
         extra: m
       }

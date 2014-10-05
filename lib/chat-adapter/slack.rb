@@ -50,7 +50,7 @@ module ChatAdapter
       {
         adapter: :slack,
         token: request[:token],
-        nick: request[:user_name],
+        user: request[:user_name],
         channel: request[:channel_name],
         extra: request
       }
