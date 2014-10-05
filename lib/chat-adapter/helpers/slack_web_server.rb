@@ -7,7 +7,7 @@ module ChatAdapter
     # Web server for receiving web hooks from slack.
     # @see ChatAdapter::Slack
     class SlackWebServer < Sinatra::Base
-      post '/slack' do
+      post '/' do
         event = settings.adapter.event_data(request)
         message = request[:text]
         ChatAdapter.log.info(message)
@@ -17,7 +17,7 @@ module ChatAdapter
       end
 
       # useful for heroku bots for pinging them automatically
-      get '/slack' do
+      get '/ping' do
         ""
       end
     end
