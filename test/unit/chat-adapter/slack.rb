@@ -27,7 +27,7 @@ class Base < Critic::Test
   end
 
   def post_query(query={})
-    post '/slack', query
+    post '/', query
   end
 
   def app
@@ -37,8 +37,11 @@ class Base < Critic::Test
   describe 'Slack bot' do
     it 'should pass through simple requests' do
       slack_bot do |msg, event|
+        next unless msg.start_with? "hello"
         "#{msg.capitalize}, #{event[:user]}"
       end
+      post_query(text: "hi", user_name: "karl")
+      assert_equal("", answer)
 
       post_query(text: "hello", user_name: "karl")
       assert_equal("Hello, karl", answer)

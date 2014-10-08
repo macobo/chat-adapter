@@ -84,6 +84,7 @@ module ChatAdapter
 
     # Wrap the answer into a correct json object
     def post_process(answer)
+      return "" if answer.nil?
       JSON.generate({
         username: options[:nick],
         icon_emoji: options[:icon_emoji],
