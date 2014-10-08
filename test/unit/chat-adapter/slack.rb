@@ -7,7 +7,8 @@ class Base < Critic::Test
   include Rack::Test::Methods
 
   def slack_bot(config={}, &blk)
-    config['channels'] ||= ["#bot-testing"]
+    config[:nick] ||= 'achatbot'
+    config[:channels] ||= ["#bot-testing"]
     @bot = ChatAdapter::Slack.new(config)
 
     @bot.on_message do |m, e|
@@ -21,6 +22,15 @@ class Base < Critic::Test
     begin
       result = JSON.parse(last_response.body)
       result['text']
+    rescue Exception => e
+      last_response.body[0, 1000]
+    end
+  end
+
+  def last_json
+    return {} if last_response.body.empty?
+    begin
+      JSON.parse(last_response.body)
     rescue Exception => e
       last_response.body[0, 1000]
     end
@@ -45,6 +55,7 @@ class Base < Critic::Test
 
       post_query(text: "hello", user_name: "karl")
       assert_equal("Hello, karl", answer)
+      assert_equal('achatbot', last_json['username'], last_json)
     end
 
     describe 'token verification' do

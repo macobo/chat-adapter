@@ -55,10 +55,10 @@ module ChatAdapter
         channel: user,
         token: options[:api_token]
       }
-      PagerBot.log.info(data.inspect)
+      log.info(data.inspect)
 
       resp = RestClient.post "https://slack.com/api/chat.postMessage", data
-      PagerBot.log.info resp
+      log.info resp
     end
 
     # Grabs information about the message from the message object.
