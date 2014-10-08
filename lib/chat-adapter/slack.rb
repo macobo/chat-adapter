@@ -52,7 +52,7 @@ module ChatAdapter
         username: options[:nick],
         icon_emoji: options[:icon_emoji],
         text: message,
-        channel: user,
+        channel: '@'+user,
         token: options[:api_token]
       }
       log.info(data.inspect)
