@@ -51,6 +51,7 @@ module ChatAdapter
       data = {
         username: options[:nick],
         icon_emoji: options[:icon_emoji],
+        link_names: true,
         text: message,
         channel: '@'+user,
         token: options[:api_token]
@@ -88,6 +89,7 @@ module ChatAdapter
       JSON.generate({
         username: options[:nick],
         icon_emoji: options[:icon_emoji],
+        link_names: true,
         text: answer
       })
     end
