@@ -72,6 +72,7 @@ module ChatAdapter
         adapter: :slack,
         token: request[:token],
         user: request[:user_name],
+        user_id: request[:user_id],
         channel: request[:channel_name],
         extra: request
       }
